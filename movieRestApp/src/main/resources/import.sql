@@ -1,0 +1,9 @@
+INSERT INTO Genre (genre) VALUES ("Adventure");
+INSERT INTO Genre (genre) VALUES ("Action");
+INSERT INTO Genre (genre) VALUES ("Comedy");
+INSERT INTO Genre (genre) VALUES ("Drama");
+INSERT INTO Genre (genre) VALUES ("Fantasy");
+INSERT INTO Genre (genre) VALUES ("Mystery");
+INSERT INTO Genre (genre) VALUES ("Documentary");;
+INSERT INTO Genre (genre) VALUES ("Thriller");
+INSERT INTO Genre (genre) VALUES ("Horror");
