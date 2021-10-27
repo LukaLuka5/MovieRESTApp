@@ -21,7 +21,8 @@ public class Movie {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String title;
-    @ManyToMany(fetch = FetchType.LAZY)
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "Movie_Genre", 
             joinColumns = { @JoinColumn(name = "movie_id",referencedColumnName="id") }, 
