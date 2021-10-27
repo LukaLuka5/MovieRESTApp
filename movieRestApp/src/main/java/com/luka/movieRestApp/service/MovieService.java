@@ -1,23 +1,37 @@
 package com.luka.movieRestApp.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.luka.movieRestApp.entities.Genre;
 import com.luka.movieRestApp.entities.Movie;
+import com.luka.movieRestApp.repositories.GenreRepo;
 import com.luka.movieRestApp.repositories.MovieRepo;
 
 @Service
 public class MovieService {
 	
 	private MovieRepo movieRepo;
+	private GenreRepo genreRepo;
 
-	public MovieService(MovieRepo movieRepo) {
+	public MovieService(MovieRepo movieRepo, GenreRepo genreRepo) {
 		this.movieRepo = movieRepo;
+		this.genreRepo = genreRepo;
 	}
 	public Movie saveMovie(Movie movie) {
+		Set<Genre> genres = new HashSet<Genre>();
+		//get genres from database first(genres that user added to a movie) instead of saving them directly to avoid duplication of genre entries in database
+		if(!movie.getGenres().isEmpty()) {
+			for (Genre genre : movie.getGenres()) {
+				genres.add(genreRepo.findGenreByGenre(genre.getGenre()));
+			}
+			movie.setGenres(genres);
+		}
 		return movieRepo.save(movie);
 	}
 	@Transactional(readOnly = true)
