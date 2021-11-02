@@ -13,6 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Movie {
@@ -20,17 +23,20 @@ public class Movie {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotBlank(message="Title can't be empty")
 	private String title;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)//default
     @JoinTable(
             name = "Movie_Genre", 
             joinColumns = { @JoinColumn(name = "movie_id",referencedColumnName="id") }, 
             inverseJoinColumns = { @JoinColumn(name = "genre_id",referencedColumnName="id") }
         )
+    @NotEmpty(message = "You have to add at least one genre of the movie")
 	private Set<Genre> genres;
     @OneToMany(mappedBy = "movie", cascade=CascadeType.ALL)
-	private List<Rating> ratings;
+	private List<@Size(min = 1, max = 10) Rating> ratings;
+    @NotBlank
 	private String description;
 	@OneToMany(mappedBy = "movie", cascade=CascadeType.ALL)
 	private Set<Review> reviews;
