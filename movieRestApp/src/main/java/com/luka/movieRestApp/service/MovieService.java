@@ -26,12 +26,10 @@ public class MovieService {
 	public Movie saveMovie(Movie movie) {
 		Set<Genre> genres = new HashSet<Genre>();
 		//get genres from database first(genres that user added to a movie) instead of saving them directly to avoid duplication of genre entries in database
-		if(!movie.getGenres().isEmpty()) {
-			for (Genre genre : movie.getGenres()) {
-				genres.add(genreRepo.findGenreByGenre(genre.getGenre()));
-			}
-			movie.setGenres(genres);
+		for (Genre genre : movie.getGenres()) {
+			genres.add(genreRepo.findGenreByGenre(genre.getGenre()));
 		}
+		movie.setGenres(genres);
 		return movieRepo.save(movie);
 	}
 	@Transactional(readOnly = true)

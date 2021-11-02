@@ -21,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.luka.movieRestApp.entities.Genre;
 import com.luka.movieRestApp.entities.Movie;
+import com.luka.movieRestApp.repositories.GenreRepo;
 import com.luka.movieRestApp.repositories.MovieRepo;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,6 +29,8 @@ class MovieServiceTest {
 
 	@Mock
 	MovieRepo movieRepo;
+	@Mock
+	GenreRepo genreRepo;
 	@InjectMocks
 	MovieService movieService;
 	
@@ -36,15 +39,16 @@ class MovieServiceTest {
 	
 	@BeforeEach
 	public void setUp(){
-		genres.add(new Genre());
+		genres.add(new Genre("Comedy"));
 		movie = new Movie("Test Title", genres, "description");
 	}
 	
 	@Test
 	void testSaveMovie() {
+		when(genreRepo.findGenreByGenre("Comedy")).thenReturn(new Genre("Comedy"));
 		when(movieRepo.save(any(Movie.class))).thenReturn(movie);
 		
-		Movie returnedMovie = movieService.saveMovie(new Movie());
+		Movie returnedMovie = movieService.saveMovie(movie);
 		
 		assertThat(returnedMovie).isEqualTo(movie);
 	}
